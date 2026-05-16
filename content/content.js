@@ -8,8 +8,8 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
 (async function main() {
   // Guard against double-injection (e.g. declarative load + SPA re-injection)
-  if (window.__parse4sgRunning) return;
-  window.__parse4sgRunning = true;
+  if (window.__navianceViewerRunning) return;
+  window.__navianceViewerRunning = true;
 
   // 1. Inject page script immediately — must happen before the page's API calls fire
   injectPageScript();
@@ -24,7 +24,7 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
   window.addEventListener('message', async (event) => {
     if (event.source !== window) return;
-    if (event.data?.type !== 'PARSE4SG_INTERCEPT') return;
+    if (event.data?.type !== 'NAVIANCE_VIEWER_INTERCEPT') return;
 
     if (!preferenceResolved) {
       buffered.push(event.data.data);

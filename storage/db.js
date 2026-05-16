@@ -1,4 +1,4 @@
-const DB_NAME = 'parse4sg';
+const DB_NAME = 'naviance-viewer';
 const DB_VERSION = 1;
 const STORE_NAME = 'schools';
 

@@ -1,7 +1,7 @@
 {
-  "name": "parse4sg-plugin",
+  "name": "naviance-viewer",
   "version": "0.1.0",
-  "description": "Parser for Scattergram from Naviance school page",
+  "description": "Chrome extension for viewing, saving, and exporting Naviance scattergram data",
   "engines": {
     "node": ">=19"
   },
@@ -10,7 +10,7 @@
     "test:watch": "jest --watch",
     "build": "esbuild content/content.js --bundle --outfile=dist/content.js --format=iife --platform=browser",
     "build:watch": "esbuild content/content.js --bundle --outfile=dist/content.js --format=iife --platform=browser --watch",
-    "package": "zip -r parse4sg-release.zip . -x 'node_modules/*' '.git/*' 'tests/*' 'docs/*' '*.zip' 'package-lock.json' 'babel.config.js'"
+    "package": "zip -r naviance-viewer-release.zip . -x 'node_modules/*' '.git/*' 'tests/*' 'docs/*' '*.zip' 'package-lock.json' 'babel.config.js'"
   },
   "jest": {
     "testEnvironment": "node",

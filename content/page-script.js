@@ -10,7 +10,7 @@
  */
 (function () {
   const SCATTERGRAM_URL_PATTERN = /application-statistics/i;
-  const MESSAGE_TYPE = 'PARSE4SG_INTERCEPT';
+  const MESSAGE_TYPE = 'NAVIANCE_VIEWER_INTERCEPT';
 
   function postIntercepted(rawText, sourceUrl) {
     try {

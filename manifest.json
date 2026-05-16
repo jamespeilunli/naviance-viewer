@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "parse4sg",
+  "name": "Naviance Viewer",
   "version": "0.1.0",
-  "description": "Parser for Scattergram from Naviance school page",
+  "description": "View, save, compare, and export Naviance scattergram data locally.",
   "permissions": ["storage", "activeTab", "scripting", "tabs", "webNavigation"],
   "host_permissions": [
     "https://*.naviance.com/*",
@@ -34,7 +34,7 @@
   ],
   "options_page": "options/options.html",
   "action": {
-    "default_title": "parse4sg",
+    "default_title": "Naviance Viewer",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

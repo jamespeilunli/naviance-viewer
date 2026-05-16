@@ -1,11 +1,11 @@
-#parse4sg-panel *,
-#parse4sg-panel *::before,
-#parse4sg-panel *::after {
+#naviance-viewer-panel *,
+#naviance-viewer-panel *::before,
+#naviance-viewer-panel *::after {
   box-sizing: border-box !important;
   line-height: normal !important;
 }
 
-#parse4sg-panel {
+#naviance-viewer-panel {
   position: fixed !important;
   top: 16px !important;
   right: 16px !important;
@@ -25,11 +25,11 @@
   padding: 0 !important;
 }
 
-#parse4sg-panel.minimized .parse4sg-body {
+#naviance-viewer-panel.minimized .naviance-viewer-body {
   display: none !important;
 }
 
-#parse4sg-panel .parse4sg-header {
+#naviance-viewer-panel .naviance-viewer-header {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -41,11 +41,11 @@
   cursor: grab !important;
 }
 
-#parse4sg-panel.minimized .parse4sg-header {
+#naviance-viewer-panel.minimized .naviance-viewer-header {
   border-radius: 9px !important;
 }
 
-#parse4sg-panel .parse4sg-title {
+#naviance-viewer-panel .naviance-viewer-title {
   display: block !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -60,12 +60,12 @@
   border: none !important;
 }
 
-#parse4sg-panel .parse4sg-header-actions {
+#naviance-viewer-panel .naviance-viewer-header-actions {
   display: flex !important;
   gap: 4px !important;
 }
 
-#parse4sg-panel .parse4sg-header-actions button {
+#naviance-viewer-panel .naviance-viewer-header-actions button {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -77,24 +77,24 @@
   opacity: 0.85 !important;
 }
 
-#parse4sg-panel .parse4sg-header-actions button:hover {
+#naviance-viewer-panel .naviance-viewer-header-actions button:hover {
   opacity: 1 !important;
 }
 
-#parse4sg-panel .parse4sg-body {
+#naviance-viewer-panel .naviance-viewer-body {
   padding: 8px 10px !important;
   margin: 0 !important;
   background: transparent !important;
 }
 
-#parse4sg-panel .parse4sg-meta {
+#naviance-viewer-panel .naviance-viewer-meta {
   font-size: 10px !important;
   color: #888 !important;
   margin: 0 0 6px 0 !important;
   padding: 0 !important;
 }
 
-#parse4sg-panel .parse4sg-stats {
+#naviance-viewer-panel .naviance-viewer-stats {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   gap: 4px !important;
@@ -102,14 +102,14 @@
   padding: 0 !important;
 }
 
-#parse4sg-panel .parse4sg-stat {
+#naviance-viewer-panel .naviance-viewer-stat {
   background: rgba(0,0,0,0.04) !important;
   border-radius: 6px !important;
   padding: 4px 6px !important;
   margin: 0 !important;
 }
 
-#parse4sg-panel .parse4sg-stat-label {
+#naviance-viewer-panel .naviance-viewer-stat-label {
   font-size: 9px !important;
   color: #777 !important;
   margin: 0 0 1px 0 !important;
@@ -119,7 +119,7 @@
   font-weight: normal !important;
 }
 
-#parse4sg-panel .parse4sg-stat-value {
+#naviance-viewer-panel .naviance-viewer-stat-value {
   font-size: 12px !important;
   font-weight: 600 !important;
   color: #111 !important;
@@ -127,7 +127,7 @@
   padding: 0 !important;
 }
 
-#parse4sg-panel .parse4sg-error {
+#naviance-viewer-panel .naviance-viewer-error {
   background: rgba(255,243,205,0.85) !important;
   border: 1px solid #ffc107 !important;
   border-radius: 6px !important;
@@ -137,14 +137,14 @@
   margin: 0 0 6px 0 !important;
 }
 
-#parse4sg-panel .parse4sg-actions {
+#naviance-viewer-panel .naviance-viewer-actions {
   display: flex !important;
   gap: 6px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-#parse4sg-panel .parse4sg-actions button {
+#naviance-viewer-panel .naviance-viewer-actions button {
   flex: 1 !important;
   padding: 5px !important;
   margin: 0 !important;
@@ -157,12 +157,12 @@
   box-shadow: none !important;
 }
 
-#parse4sg-panel .parse4sg-actions button.primary {
+#naviance-viewer-panel .naviance-viewer-actions button.primary {
   background: rgba(26,115,232,0.82) !important;
   color: #fff !important;
   border-color: transparent !important;
 }
 
-#parse4sg-panel .parse4sg-actions button:hover {
+#naviance-viewer-panel .naviance-viewer-actions button:hover {
   opacity: 0.85 !important;
 }

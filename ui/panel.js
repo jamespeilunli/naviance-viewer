@@ -49,7 +49,7 @@ export function showPanel({ data, parseError, parserTier, capturedAt }) {
   if (panelEl) panelEl.remove();
 
   panelEl = document.createElement('div');
-  panelEl.id = 'parse4sg-panel';
+  panelEl.id = 'naviance-viewer-panel';
   panelEl.innerHTML = buildPanelHTML({ data, parseError, parserTier, capturedAt });
   (document.body ?? document.documentElement).appendChild(panelEl);
 
@@ -60,29 +60,29 @@ export function showPanel({ data, parseError, parserTier, capturedAt }) {
   panelEl.addEventListener('mouseenter', resetAutoMinimizeTimer);
   panelEl.addEventListener('mouseleave', startAutoMinimizeTimer);
 
-  panelEl.querySelector('#parse4sg-minimize')?.addEventListener('click', () => {
+  panelEl.querySelector('#naviance-viewer-minimize')?.addEventListener('click', () => {
     panelEl.classList.toggle('minimized');
     // If manually expanded, restart the countdown
     if (!panelEl.classList.contains('minimized')) startAutoMinimizeTimer();
   });
 
-  panelEl.querySelector('#parse4sg-close')?.addEventListener('click', () => {
+  panelEl.querySelector('#naviance-viewer-close')?.addEventListener('click', () => {
     removePanel();
   });
 
   if (data) {
     const schoolName = data.school?.name ?? 'school';
 
-    panelEl.querySelector('#parse4sg-export-json')?.addEventListener('click', () => {
+    panelEl.querySelector('#naviance-viewer-export-json')?.addEventListener('click', () => {
       downloadJSON(data, buildExportFilename(schoolName, 'json'));
     });
 
-    panelEl.querySelector('#parse4sg-export-csv')?.addEventListener('click', () => {
+    panelEl.querySelector('#naviance-viewer-export-csv')?.addEventListener('click', () => {
       downloadCSV(data, buildExportFilename(schoolName, 'csv'));
     });
   }
 
-  panelEl.querySelector('#parse4sg-reparse')?.addEventListener('click', () => {
+  panelEl.querySelector('#naviance-viewer-reparse')?.addEventListener('click', () => {
     window.location.reload();
   });
 }
@@ -112,23 +112,23 @@ function buildPanelHTML({ data, parseError, parserTier, capturedAt }) {
   const stats = data ? computeSummaryStats(data) : null;
 
   return `
-    <div class="parse4sg-header">
-      <span class="parse4sg-title" title="${escapeHTML(schoolName)}">${escapeHTML(schoolName)}</span>
-      <div class="parse4sg-header-actions">
-        <button id="parse4sg-minimize" title="Minimize">—</button>
-        <button id="parse4sg-close" title="Close">✕</button>
+    <div class="naviance-viewer-header">
+      <span class="naviance-viewer-title" title="${escapeHTML(schoolName)}">${escapeHTML(schoolName)}</span>
+      <div class="naviance-viewer-header-actions">
+        <button id="naviance-viewer-minimize" title="Minimize">—</button>
+        <button id="naviance-viewer-close" title="Close">✕</button>
       </div>
     </div>
-    <div class="parse4sg-body">
-      <div class="parse4sg-meta">Last parsed: ${dateStr}${tierStr ? ` · ${tierStr}` : ''}</div>
-      ${parseError ? `<div class="parse4sg-error">⚠ Latest parse failed — showing saved data.<br><small>${escapeHTML(parseError)}</small></div>` : ''}
+    <div class="naviance-viewer-body">
+      <div class="naviance-viewer-meta">Last parsed: ${dateStr}${tierStr ? ` · ${tierStr}` : ''}</div>
+      ${parseError ? `<div class="naviance-viewer-error">⚠ Latest parse failed — showing saved data.<br><small>${escapeHTML(parseError)}</small></div>` : ''}
       ${stats ? buildStatsHTML(stats) : '<p style="color:#888;font-size:13px;">No data available.</p>'}
-      <div class="parse4sg-actions">
+      <div class="naviance-viewer-actions">
         ${data ? `
-          <button id="parse4sg-export-json" class="primary">Export JSON</button>
-          <button id="parse4sg-export-csv">Export CSV</button>
+          <button id="naviance-viewer-export-json" class="primary">Export JSON</button>
+          <button id="naviance-viewer-export-csv">Export CSV</button>
         ` : `
-          <button id="parse4sg-reparse">Re-parse page</button>
+          <button id="naviance-viewer-reparse">Re-parse page</button>
         `}
       </div>
     </div>
@@ -137,30 +137,30 @@ function buildPanelHTML({ data, parseError, parserTier, capturedAt }) {
 
 function buildStatsHTML(stats) {
   return `
-    <div class="parse4sg-stats">
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">Total Applicants</div>
-        <div class="parse4sg-stat-value">${stats.total}</div>
+    <div class="naviance-viewer-stats">
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">Total Applicants</div>
+        <div class="naviance-viewer-stat-value">${stats.total}</div>
       </div>
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">Acceptance Rate</div>
-        <div class="parse4sg-stat-value">${stats.acceptanceRate}</div>
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">Acceptance Rate</div>
+        <div class="naviance-viewer-stat-value">${stats.acceptanceRate}</div>
       </div>
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">GPA Range</div>
-        <div class="parse4sg-stat-value">${stats.gpaRange}</div>
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">GPA Range</div>
+        <div class="naviance-viewer-stat-value">${stats.gpaRange}</div>
       </div>
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">SAT Range</div>
-        <div class="parse4sg-stat-value">${stats.satRange}</div>
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">SAT Range</div>
+        <div class="naviance-viewer-stat-value">${stats.satRange}</div>
       </div>
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">ACT Range</div>
-        <div class="parse4sg-stat-value">${stats.actRange}</div>
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">ACT Range</div>
+        <div class="naviance-viewer-stat-value">${stats.actRange}</div>
       </div>
-      <div class="parse4sg-stat">
-        <div class="parse4sg-stat-label">By Round</div>
-        <div class="parse4sg-stat-value" style="font-size:12px;">${stats.byRound}</div>
+      <div class="naviance-viewer-stat">
+        <div class="naviance-viewer-stat-label">By Round</div>
+        <div class="naviance-viewer-stat-value" style="font-size:12px;">${stats.byRound}</div>
       </div>
     </div>
   `;
@@ -212,7 +212,7 @@ function computeSummaryStats(data) {
 }
 
 function bindDrag(panel) {
-  const header = panel.querySelector('.parse4sg-header');
+  const header = panel.querySelector('.naviance-viewer-header');
 
   // Remove any previous document-level drag listeners before adding new ones
   if (dragMoveHandler) document.removeEventListener('mousemove', dragMoveHandler);
@@ -239,9 +239,9 @@ function bindDrag(panel) {
 }
 
 function injectCSS() {
-  if (document.getElementById('parse4sg-styles')) return;
+  if (document.getElementById('naviance-viewer-styles')) return;
   const link = document.createElement('link');
-  link.id = 'parse4sg-styles';
+  link.id = 'naviance-viewer-styles';
   link.rel = 'stylesheet';
   link.href = chrome.runtime.getURL('ui/panel.css');
   document.head.appendChild(link);

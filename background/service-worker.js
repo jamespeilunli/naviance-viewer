@@ -1,5 +1,5 @@
 /**
- * Service worker for parse4sg.
+ * Service worker for Naviance Viewer.
  * Detects navigation to Naviance scattergram pages and updates the extension badge.
  * Also handles SPA (pushState) navigation by dynamically injecting scripts.
  */
