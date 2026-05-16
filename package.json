@@ -1,0 +1,30 @@
+{
+  "name": "parse4sg-plugin",
+  "version": "0.1.0",
+  "description": "Parser for Scattergram from Naviance school page",
+  "engines": {
+    "node": ">=19"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "esbuild content/content.js --bundle --outfile=dist/content.js --format=iife --platform=browser",
+    "build:watch": "esbuild content/content.js --bundle --outfile=dist/content.js --format=iife --platform=browser --watch",
+    "package": "zip -r parse4sg-release.zip . -x 'node_modules/*' '.git/*' 'tests/*' 'docs/*' '*.zip' 'package-lock.json' 'babel.config.js'"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
+    "esbuild": "^0.27.4",
+    "fake-indexeddb": "^4.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.3.0"
+  }
+}

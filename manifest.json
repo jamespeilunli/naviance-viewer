@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "parse4sg",
+  "version": "0.1.0",
+  "description": "Parser for Scattergram from Naviance school page",
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "webNavigation"],
+  "host_permissions": [
+    "https://*.naviance.com/*",
+    "https://connection.naviance.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.naviance.com/explore/college/*",
+        "https://*.naviance.com/*scattergram*",
+        "https://connection.naviance.com/*scattergram*"
+      ],
+      "js": ["dist/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/page-script.js", "ui/panel.css"],
+      "matches": [
+        "https://*.naviance.com/*",
+        "https://connection.naviance.com/*"
+      ]
+    }
+  ],
+  "options_page": "options/options.html",
+  "action": {
+    "default_title": "parse4sg",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

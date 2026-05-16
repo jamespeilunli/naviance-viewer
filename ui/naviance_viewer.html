@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naviance College Planner</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+      --bg: #080b10;
+      --surface: #0e1118;
+      --surface2: #141820;
+      --border: #1c2230;
+      --border2: #242d3d;
+      --accent: #00e5ff;
+      --accent2: #0099bb;
+      --green: #00e676;
+      --red: #ff5252;
+      --amber: #ffab40;
+      --purple: #ce93d8;
+      --text: #dde4f0;
+      --muted: #4a5568;
+      --muted2: #6b7a96;
+      --reach: #ff5252;
+      --match: #ffab40;
+      --likely: #00e676;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      overflow-x: hidden;
+    }
+
+    /* ══ SHARED ══ */
+    .mono {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .tag-reach {
+      background: rgba(255, 82, 82, 0.15);
+      color: var(--reach);
+      border: 1px solid rgba(255, 82, 82, 0.3);
+    }
+
+    .tag-match {
+      background: rgba(255, 171, 64, 0.15);
+      color: var(--amber);
+      border: 1px solid rgba(255, 171, 64, 0.3);
+    }
+
+    .tag-likely {
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--green);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+    }
+
+    .tag-unknown {
+      background: rgba(107, 122, 150, 0.15);
+      color: var(--muted2);
+      border: 1px solid rgba(107, 122, 150, 0.2);
+    }
+
+    /* ══ VIEWS ══ */
+    .view {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* ════════════════════════════════════
+   VIEW 0 — LOAD SCREEN
+════════════════════════════════════ */
+    #v-load {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 20px;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #v-load.active {
+      display: flex;
+    }
+
+    #v-load h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.4rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #v-load p {
+      color: var(--muted2);
+      font-size: 0.82rem;
+      max-width: 420px;
+      line-height: 1.7;
+    }
+
+    .load-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 14px 34px;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: opacity 0.15s;
+      margin-top: 8px;
+    }
+
+    .load-btn:hover {
+      opacity: 0.82;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    #loadError {
+      color: var(--red);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      display: none;
+    }
+
+    .load-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 16px;
+    }
+
+    /* ════════════════════════════════════
+   VIEW 1 — DASHBOARD
+════════════════════════════════════ */
+    #v-dash {
+      padding: 28px 32px;
+    }
+
+    .dash-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .dash-header h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dash-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-ghost {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-ghost:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .me-strip {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: rgba(0, 229, 255, 0.04);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+    }
+
+    .me-strip .me-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .me-strip .me-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted2);
+    }
+
+    .me-strip .me-val b {
+      color: var(--accent);
+    }
+    
+    .my-input {
+      background: rgba(0,229,255,0.05);
+      border: 1px dashed var(--accent);
+      border-radius: 4px;
+      color: var(--accent);
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: 700;
+      width: 54px;
+      text-align: center;
+      padding: 2px 4px;
+      margin: 0 4px;
+      transition: all 0.15s;
+    }
+    .my-input:focus {
+      outline: none;
+      border: 1px solid var(--accent);
+      background: rgba(0,229,255,0.15);
+    }
+
+    /* summary table */
+    .tbl-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: var(--surface);
+      padding: 10px 14px;
+      text-align: left;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+    }
+
+    thead th:hover {
+      color: var(--accent);
+    }
+
+    thead th .sort-arrow {
+      margin-left: 4px;
+      opacity: 0.4;
+    }
+
+    thead th.sorted .sort-arrow {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--surface2);
+    }
+
+    tbody td {
+      padding: 11px 14px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    tbody td.school-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .delta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+    }
+
+    .delta.pos {
+      color: var(--green);
+    }
+
+    .delta.neg {
+      color: var(--red);
+    }
+
+    .delta.neu {
+      color: var(--muted2);
+    }
+
+    .no-data-cell {
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    /* ════════════════════════════════════
+   VIEW 2 — SINGLE SCHOOL
+════════════════════════════════════ */
+    #v-school {
+      padding: 24px 28px;
+    }
+
+    .school-topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .back-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .back-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .school-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .school-sub {
+      font-size: 0.72rem;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .s-stats-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .stat-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-chip .val {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .stat-chip .lbl {
+      color: var(--muted2);
+    }
+
+    .s-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .ctrl-group {
+      display: flex;
+      gap: 3px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: none;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      padding: 5px 11px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .ctrl-btn:hover {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    .ctrl-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .me-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 9px 14px;
+      background: rgba(0, 229, 255, 0.04);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted2);
+    }
+
+    .me-bar .me-tag {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 20px;
+      border: 1.5px solid;
+      padding: 4px 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+      background: transparent;
+      letter-spacing: 0.03em;
+    }
+
+    .filter-btn .fdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: #0a0c10;
+    }
+
+    .filter-btn.off {
+      opacity: 0.35;
+      filter: grayscale(0.4);
+      background: transparent !important;
+      color: var(--muted2) !important;
+    }
+
+    .chart-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 20px 16px 16px;
+      margin-bottom: 14px;
+    }
+
+    canvas {
+      display: block;
+      cursor: crosshair;
+    }
+
+    .no-data-msg {
+      text-align: center;
+      padding: 40px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Year chart */
+    .year-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media(max-width:700px) {
+      .year-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .year-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .year-card h3 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .year-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 90px;
+    }
+
+    .year-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .year-bar-wrap {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .bar-applied {
+      width: 100%;
+      background: var(--border2);
+      border-radius: 3px 3px 0 0;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .bar-accepted {
+      width: 55%;
+      background: var(--green);
+      border-radius: 2px 2px 0 0;
+      position: absolute;
+      bottom: 0;
+      left: 22.5%;
+      opacity: 0.85;
+    }
+
+    .year-nums {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      text-align: center;
+      line-height: 1.4;
+      margin-bottom: 2px;
+    }
+
+    .year-nums .na {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .year-nums .nap {
+      color: var(--muted);
+    }
+
+    .year-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    canvas#trendChart {
+      display: block;
+    }
+
+    .info-bar {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ════════════════════════════════════
+   VIEW 3 — COMPARE
+════════════════════════════════════ */
+    #v-compare {
+      padding: 24px 28px;
+    }
+
+    .compare-topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .compare-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--purple);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .compare-tabs {
+      display: flex;
+      gap: 3px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+
+    .compare-tab {
+      background: none;
+      border: none;
+      color: var(--muted2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      padding: 6px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .compare-tab.active {
+      background: var(--purple);
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    .compare-tab:hover:not(.active) {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    .school-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .school-picker-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .school-pill {
+      border-radius: 20px;
+      border: 1.5px solid;
+      padding: 4px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+      background: transparent;
+    }
+
+    .school-pill.off {
+      opacity: 0.35;
+      filter: grayscale(0.5);
+    }
+
+    /* ════════════════════════════════════
+   TOOLTIP
+════════════════════════════════════ */
+    #tooltip {
+      position: fixed;
+      background: #151c28;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.1s;
+      z-index: 999;
+      min-width: 150px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    #tooltip.visible {
+      opacity: 1;
+    }
+
+    #tooltip .tt-head {
+      font-weight: 600;
+      font-size: 0.78rem;
+      margin-bottom: 5px;
+    }
+
+    #tooltip .tt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted2);
+      margin-top: 2px;
+    }
+
+    #tooltip .tt-row span:last-child {
+      color: var(--text);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ VIEW 0: LOAD ══ -->
+  <div id="v-load" class="view active">
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" stroke-width="1.2" style="opacity:0.3">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="12" y1="18" x2="12" y2="12" />
+      <polyline points="9 15 12 12 15 15" />
+    </svg>
+    <h1>Naviance College Planner</h1>
+    <p>Load all your Naviance JSON files at once. Each file should be the applicants API response for one school.</p>
+    <button class="load-btn" id="btn-load-json">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
+      Load JSON Files
+    </button>
+    <button class="load-btn" id="btn-load-db" style="background:var(--purple);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z" />
+      </svg>
+      Load from Extension DB
+    </button>
+    <input type="file" id="fileInput" accept=".json" multiple>
+    <div id="loadError"></div>
+    <div class="load-hint">DevTools → Network → filter XHR → scattergram/applicants endpoint → Save as JSON</div>
+  </div>
+
+  <!-- ══ VIEW 1: DASHBOARD ══ -->
+  <div id="v-dash" class="view">
+    <div class="dash-header">
+      <div>
+        <h1>College Dashboard</h1>
+        <div class="mono" style="font-size:0.68rem;color:var(--muted2);margin-top:3px;" id="dash-subtitle"></div>
+      </div>
+      <div class="dash-actions">
+        <button class="btn-ghost" id="btn-dash-compare">⊕ Compare View</button>
+        <button class="btn-ghost" id="btn-dash-load-db">↑ Load from DB</button>
+        <button class="btn-ghost" id="btn-dash-load-json">↑ Load more files</button>
+      </div>
+    </div>
+
+    <div class="me-strip">
+      <span class="me-label">● ME</span>
+      <span class="me-val">UW GPA <input type="number" step="0.01" class="my-input" data-key="uwGpa" value="4.00"></span>
+      <span class="me-val">W GPA (Total) <input type="number" step="0.01" class="my-input" data-key="wTotalGpa" value="4.52"></span>
+      <span class="me-val">W GPA (Acad) <input type="number" step="0.01" class="my-input" data-key="wAcadGpa" value="4.56"></span>
+      <span class="me-val">W GPA (10-12) <input type="number" step="0.01" class="my-input" data-key="w1012Gpa" value="4.67"></span>
+      <span class="me-val">Target SAT <input type="number" step="10" class="my-input" data-key="sat" value="1540"></span>
+      <span class="me-val">Target ACT <input type="number" step="1" class="my-input" data-key="act" value="34"></span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table id="dashTable">
+        <thead>
+          <tr>
+            <th data-col="name">School <span class="sort-arrow">↕</span></th>
+            <th data-col="tag">Category <span class="sort-arrow">↕</span></th>
+            <th data-col="acceptRate">Accept Rate <span class="sort-arrow">↕</span></th>
+            <th data-col="medGpa">Accepted GPA med <span class="sort-arrow">↕</span></th>
+            <th data-col="deltaGpa">My GPA Δ <span class="sort-arrow">↕</span></th>
+            <th data-col="medSat">Accepted SAT med <span class="sort-arrow">↕</span></th>
+            <th data-col="deltaSat">My SAT Δ <span class="sort-arrow">↕</span></th>
+            <th data-col="total">Applicants <span class="sort-arrow">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="dashBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ VIEW 2: SINGLE SCHOOL ══ -->
+  <div id="v-school" class="view">
+    <div class="school-topbar">
+      <button class="back-btn" id="btn-compare-dash">← Dashboard</button>
+      <div>
+        <div class="school-title" id="s-title"></div>
+        <div class="school-sub" id="s-sub"></div>
+      </div>
+      <div id="s-tag-holder" style="margin-left:8px;"></div>
+      <button class="btn-ghost" id="btn-school-compare" style="margin-left:auto;">⊕ Compare View</button>
+    </div>
+
+    <div class="s-stats-row" id="s-stats"></div>
+
+    <div class="s-controls">
+      <div class="ctrl-group" id="s-gpaToggle">
+        <button class="ctrl-btn" data-mode="gpa">Unweighted GPA</button>
+        <button class="ctrl-btn active" data-mode="weightedGpa">Weighted GPA</button>
+      </div>
+      <div class="ctrl-group" id="s-scoreToggle">
+        <button class="ctrl-btn active" data-score="sat">SAT</button>
+        <button class="ctrl-btn" data-score="act">ACT</button>
+      </div>
+    </div>
+
+    <div class="me-bar">
+      <span class="me-tag">● ME</span>
+      <span id="s-me-label"></span>
+    </div>
+
+    <div class="filter-row" id="s-filterRow">
+      <span class="filter-label">Filter:</span>
+    </div>
+
+    <div class="chart-wrapper">
+      <div id="s-nodata" class="no-data-msg hidden">No data points with scores for this combination.</div>
+      <canvas id="scatterCanvas"></canvas>
+    </div>
+
+    <div class="year-section">
+      <div class="year-card">
+        <h3>Applications by Year</h3>
+        <div class="year-bars" id="s-yearBars"></div>
+      </div>
+      <div class="year-card">
+        <h3>Acceptance Rate Trend</h3>
+        <canvas id="trendChart" height="90"></canvas>
+      </div>
+    </div>
+
+    <div class="info-bar">Hover dots for details · Click filter buttons to show/hide outcomes</div>
+  </div>
+
+  <!-- ══ VIEW 3: COMPARE ══ -->
+  <div id="v-compare" class="view">
+    <div class="compare-topbar">
+      <button class="back-btn" id="btn-compare-dash">← Dashboard</button>
+      <div class="compare-title">Cross-School Compare</div>
+    </div>
+
+    <div class="compare-tabs">
+      <button class="compare-tab active" data-ctab="overlay">Overlay Scattergrams</button>
+      <button class="compare-tab" data-ctab="mydot">Where Does My Dot Land</button>
+      <button class="compare-tab" data-ctab="rates">Acceptance Rates</button>
+    </div>
+
+    <div class="school-picker" id="c-picker">
+      <span class="school-picker-label">Schools:</span>
+    </div>
+
+    <div class="s-controls" id="c-scoreControls">
+      <div class="ctrl-group" id="c-gpaToggle">
+        <button class="ctrl-btn" data-mode="gpa">Unweighted</button>
+        <button class="ctrl-btn active" data-mode="weightedGpa">Weighted GPA</button>
+      </div>
+      <div class="ctrl-group" id="c-scoreToggle">
+        <button class="ctrl-btn active" data-score="sat">SAT</button>
+        <button class="ctrl-btn" data-score="act">ACT</button>
+      </div>
+    </div>
+
+    <div class="chart-wrapper" id="c-chartWrap">
+      <canvas id="compareCanvas"></canvas>
+    </div>
+
+    <div id="c-mydotTable" class="hidden" style="margin-top:16px;"></div>
+    <div id="c-ratesWrap" class="hidden" style="margin-top:4px;"></div>
+  </div>
+
+  <div id="tooltip"></div>
+
+  <script src="naviance_viewer.js"></script>
+
+</body>
+
+</html>
