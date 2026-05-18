@@ -6,8 +6,6 @@ Naviance Viewer makes scattergram data easier to access, understand, and act on.
 
 The goal is simple: make useful college planning information more accessible, especially for students who cannot afford private college counselors.
 
-![Naviance Viewer college list dashboard](readme_assets/college_list.png)
-
 ## Why This Matters
 
 Many students already have access to valuable historical admissions data through Naviance, but the interface can make it hard to compare schools, track patterns, or use the data while building a college list. Students with private counselors often get help interpreting this information. Students without that support are left to manually inspect scattergrams one school at a time.
