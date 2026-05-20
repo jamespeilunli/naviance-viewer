@@ -1,5 +1,9 @@
 # Naview
 
+<p>
+  <img src="icons/icon512.png" alt="Naview logo" width="132">
+</p>
+
 **A free Chrome extension that helps students turn school-specific Naviance data into clearer college planning decisions.**
 
 Naview makes scattergram data easier to access, understand, and act on. It is built for students who want to organize their college search, build balanced college lists, and prepare for applications using information specific to their own high school.
