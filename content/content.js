@@ -24,7 +24,7 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
   window.addEventListener('message', async (event) => {
     if (event.source !== window) return;
-    if (event.data?.type !== 'NAVIANCE_VIEWER_INTERCEPT') return;
+    if (event.data?.type !== 'SCATTERGRAM_VIEWER_INTERCEPT') return;
 
     if (!preferenceResolved) {
       buffered.push(event.data.data);

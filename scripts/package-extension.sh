@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKAGE_DIR="$ROOT_DIR/.extension-package"
-ZIP_FILE="$ROOT_DIR/naviance-viewer-release.zip"
+ZIP_FILE="$ROOT_DIR/naview-release.zip"
 
 cd "$ROOT_DIR"
 

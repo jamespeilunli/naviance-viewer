@@ -1,5 +1,5 @@
 {
-  "name": "naviance-viewer",
+  "name": "naview",
   "version": "0.1.0",
   "description": "Chrome extension for viewing, saving, and exporting Naviance scattergram data",
   "engines": {

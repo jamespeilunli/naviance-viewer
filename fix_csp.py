@@ -1,7 +1,7 @@
 import re
 
-html_path = 'ui/naviance_viewer.html'
-js_path = 'ui/naviance_viewer.js'
+html_path = 'ui/viewer.html'
+js_path = 'ui/viewer.js'
 
 with open(html_path, 'r', encoding='utf-8') as f:
     content = f.read()
@@ -32,7 +32,7 @@ html_replacements = [
      '<button class="btn-ghost" id="btn-school-compare" style="margin-left:auto;">⊕ Compare View</button>'),
 ]
 
-new_html = content[:script_match.start()] + '<script src="naviance_viewer.js"></script>\n' + content[script_match.end():]
+new_html = content[:script_match.start()] + '<script src="viewer.js"></script>\n' + content[script_match.end():]
 
 # We must replace the second back-btn for compare dash explicitly
 new_html = re.sub(r'<button class="back-btn" onclick="showDash\(\)">← Dashboard</button>',

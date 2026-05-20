@@ -1,8 +1,8 @@
-# Naviance Viewer
+# Naview
 
 **A free Chrome extension that helps students turn school-specific Naviance data into clearer college planning decisions.**
 
-Naviance Viewer makes scattergram data easier to access, understand, and act on. It is built for students who want to organize their college search, build balanced college lists, and prepare for applications using information specific to their own high school.
+Naview makes scattergram data easier to access, understand, and act on. It is built for students who want to organize their college search, build balanced college lists, and prepare for applications using information specific to their own high school.
 
 The goal is simple: make useful college planning information more accessible, especially for students who cannot afford private college counselors.
 
@@ -10,7 +10,7 @@ The goal is simple: make useful college planning information more accessible, es
 
 Many students already have access to valuable historical admissions data through Naviance, but the interface can make it hard to compare schools, track patterns, or use the data while building a college list. Students with private counselors often get help interpreting this information. Students without that support are left to manually inspect scattergrams one school at a time.
 
-Naviance Viewer helps close that gap by turning the data a student already has access to into a searchable, visual, local dashboard.
+Naview helps close that gap by turning the data a student already has access to into a searchable, visual, local dashboard.
 
 ## What It Does
 
@@ -51,7 +51,7 @@ Compare multiple colleges side by side to make a more balanced application list.
 
 ## Privacy First
 
-Naviance Viewer stores parsed scattergram data locally in the browser with IndexedDB. It does not upload scattergram data to a server.
+Naview stores parsed scattergram data locally in the browser with IndexedDB. It does not upload scattergram data to a server.
 
 The primary parser uses the Naviance page's local network responses. An optional fallback parser is designed around Chrome built-in AI APIs if available, but the app does not require AI for its core workflow.
 
@@ -124,7 +124,7 @@ Click the extension icon to open the dashboard viewer.
 ## Project Structure
 
 ```text
-naviance-viewer/
+naview/
 ├── manifest.json
 ├── background/
 ├── content/
@@ -144,4 +144,4 @@ Create a lightweight release zip without `node_modules`, test fixtures, or git m
 npm run package
 ```
 
-The release archive is written to `naviance-viewer-release.zip`.
+The release archive is written to `naview-release.zip`.

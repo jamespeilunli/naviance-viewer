@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Naviance Viewer",
+  "name": "Naview",
   "version": "0.1.0",
   "description": "View, save, compare, and export Naviance scattergram data locally.",
   "permissions": ["storage", "scripting", "tabs", "webNavigation"],
@@ -34,7 +34,7 @@
   ],
   "options_page": "options/options.html",
   "action": {
-    "default_title": "Naviance Viewer",
+    "default_title": "Naview",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

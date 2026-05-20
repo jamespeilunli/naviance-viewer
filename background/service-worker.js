@@ -1,5 +1,5 @@
 /**
- * Service worker for Naviance Viewer.
+ * Service worker for Naview.
  * Detects navigation to Naviance scattergram pages and updates the extension badge.
  * Also handles SPA (pushState) navigation by dynamically injecting scripts.
  */
@@ -26,7 +26,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 });
 
 chrome.action.onClicked.addListener((tab) => {
-  chrome.tabs.create({ url: chrome.runtime.getURL('ui/naviance_viewer.html') });
+  chrome.tabs.create({ url: chrome.runtime.getURL('ui/viewer.html') });
 });
 
 // Naviance is a SPA — clicking a college link changes the URL via History API without

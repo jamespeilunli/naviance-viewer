@@ -1,4 +1,4 @@
-const DB_NAME = 'naviance-viewer';
+const DB_NAME = 'scattergram-viewer';
 const DB_VERSION = 1;
 const STORE_NAME = 'schools';
 

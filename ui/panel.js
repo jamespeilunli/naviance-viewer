@@ -49,7 +49,7 @@ export function showPanel({ data, parseError, parserTier, capturedAt }) {
   if (panelEl) panelEl.remove();
 
   panelEl = document.createElement('div');
-  panelEl.id = 'naviance-viewer-panel';
+  panelEl.id = 'scattergram-viewer-panel';
   panelEl.innerHTML = buildPanelHTML({ data, parseError, parserTier, capturedAt });
   (document.body ?? document.documentElement).appendChild(panelEl);
 
@@ -60,29 +60,29 @@ export function showPanel({ data, parseError, parserTier, capturedAt }) {
   panelEl.addEventListener('mouseenter', resetAutoMinimizeTimer);
   panelEl.addEventListener('mouseleave', startAutoMinimizeTimer);
 
-  panelEl.querySelector('#naviance-viewer-minimize')?.addEventListener('click', () => {
+  panelEl.querySelector('#scattergram-viewer-minimize')?.addEventListener('click', () => {
     panelEl.classList.toggle('minimized');
     // If manually expanded, restart the countdown
     if (!panelEl.classList.contains('minimized')) startAutoMinimizeTimer();
   });
 
-  panelEl.querySelector('#naviance-viewer-close')?.addEventListener('click', () => {
+  panelEl.querySelector('#scattergram-viewer-close')?.addEventListener('click', () => {
     removePanel();
   });
 
   if (data) {
     const schoolName = data.school?.name ?? 'school';
 
-    panelEl.querySelector('#naviance-viewer-export-json')?.addEventListener('click', () => {
+    panelEl.querySelector('#scattergram-viewer-export-json')?.addEventListener('click', () => {
       downloadJSON(data, buildExportFilename(schoolName, 'json'));
     });
 
-    panelEl.querySelector('#naviance-viewer-export-csv')?.addEventListener('click', () => {
+    panelEl.querySelector('#scattergram-viewer-export-csv')?.addEventListener('click', () => {
       downloadCSV(data, buildExportFilename(schoolName, 'csv'));
     });
   }
 
-  panelEl.querySelector('#naviance-viewer-reparse')?.addEventListener('click', () => {
+  panelEl.querySelector('#scattergram-viewer-reparse')?.addEventListener('click', () => {
     window.location.reload();
   });
 }
@@ -112,23 +112,23 @@ function buildPanelHTML({ data, parseError, parserTier, capturedAt }) {
   const stats = data ? computeSummaryStats(data) : null;
 
   return `
-    <div class="naviance-viewer-header">
-      <span class="naviance-viewer-title" title="${escapeHTML(schoolName)}">${escapeHTML(schoolName)}</span>
-      <div class="naviance-viewer-header-actions">
-        <button id="naviance-viewer-minimize" title="Minimize">—</button>
-        <button id="naviance-viewer-close" title="Close">✕</button>
+    <div class="scattergram-viewer-header">
+      <span class="scattergram-viewer-title" title="${escapeHTML(schoolName)}">${escapeHTML(schoolName)}</span>
+      <div class="scattergram-viewer-header-actions">
+        <button id="scattergram-viewer-minimize" title="Minimize">—</button>
+        <button id="scattergram-viewer-close" title="Close">✕</button>
       </div>
     </div>
-    <div class="naviance-viewer-body">
-      <div class="naviance-viewer-meta">Last parsed: ${dateStr}${tierStr ? ` · ${tierStr}` : ''}</div>
-      ${parseError ? `<div class="naviance-viewer-error">⚠ Latest parse failed — showing saved data.<br><small>${escapeHTML(parseError)}</small></div>` : ''}
+    <div class="scattergram-viewer-body">
+      <div class="scattergram-viewer-meta">Last parsed: ${dateStr}${tierStr ? ` · ${tierStr}` : ''}</div>
+      ${parseError ? `<div class="scattergram-viewer-error">⚠ Latest parse failed — showing saved data.<br><small>${escapeHTML(parseError)}</small></div>` : ''}
       ${stats ? buildStatsHTML(stats) : '<p style="color:#888;font-size:13px;">No data available.</p>'}
-      <div class="naviance-viewer-actions">
+      <div class="scattergram-viewer-actions">
         ${data ? `
-          <button id="naviance-viewer-export-json" class="primary">Export JSON</button>
-          <button id="naviance-viewer-export-csv">Export CSV</button>
+          <button id="scattergram-viewer-export-json" class="primary">Export JSON</button>
+          <button id="scattergram-viewer-export-csv">Export CSV</button>
         ` : `
-          <button id="naviance-viewer-reparse">Re-parse page</button>
+          <button id="scattergram-viewer-reparse">Re-parse page</button>
         `}
       </div>
     </div>
@@ -137,30 +137,30 @@ function buildPanelHTML({ data, parseError, parserTier, capturedAt }) {
 
 function buildStatsHTML(stats) {
   return `
-    <div class="naviance-viewer-stats">
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">Total Applicants</div>
-        <div class="naviance-viewer-stat-value">${stats.total}</div>
+    <div class="scattergram-viewer-stats">
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">Total Applicants</div>
+        <div class="scattergram-viewer-stat-value">${stats.total}</div>
       </div>
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">Acceptance Rate</div>
-        <div class="naviance-viewer-stat-value">${stats.acceptanceRate}</div>
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">Acceptance Rate</div>
+        <div class="scattergram-viewer-stat-value">${stats.acceptanceRate}</div>
       </div>
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">GPA Range</div>
-        <div class="naviance-viewer-stat-value">${stats.gpaRange}</div>
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">GPA Range</div>
+        <div class="scattergram-viewer-stat-value">${stats.gpaRange}</div>
       </div>
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">SAT Range</div>
-        <div class="naviance-viewer-stat-value">${stats.satRange}</div>
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">SAT Range</div>
+        <div class="scattergram-viewer-stat-value">${stats.satRange}</div>
       </div>
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">ACT Range</div>
-        <div class="naviance-viewer-stat-value">${stats.actRange}</div>
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">ACT Range</div>
+        <div class="scattergram-viewer-stat-value">${stats.actRange}</div>
       </div>
-      <div class="naviance-viewer-stat">
-        <div class="naviance-viewer-stat-label">By Round</div>
-        <div class="naviance-viewer-stat-value" style="font-size:12px;">${stats.byRound}</div>
+      <div class="scattergram-viewer-stat">
+        <div class="scattergram-viewer-stat-label">By Round</div>
+        <div class="scattergram-viewer-stat-value" style="font-size:12px;">${stats.byRound}</div>
       </div>
     </div>
   `;
@@ -212,7 +212,7 @@ function computeSummaryStats(data) {
 }
 
 function bindDrag(panel) {
-  const header = panel.querySelector('.naviance-viewer-header');
+  const header = panel.querySelector('.scattergram-viewer-header');
 
   // Remove any previous document-level drag listeners before adding new ones
   if (dragMoveHandler) document.removeEventListener('mousemove', dragMoveHandler);
@@ -239,9 +239,9 @@ function bindDrag(panel) {
 }
 
 function injectCSS() {
-  if (document.getElementById('naviance-viewer-styles')) return;
+  if (document.getElementById('scattergram-viewer-styles')) return;
   const link = document.createElement('link');
-  link.id = 'naviance-viewer-styles';
+  link.id = 'scattergram-viewer-styles';
   link.rel = 'stylesheet';
   link.href = chrome.runtime.getURL('ui/panel.css');
   document.head.appendChild(link);
