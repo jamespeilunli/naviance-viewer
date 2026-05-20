@@ -65,7 +65,7 @@ function buildResult(rawData, context) {
     },
     scattergrams: rawData.scattergrams,
     applicationsByYear: rawData.applicationsByYear ?? {},
-    userInfo: rawData.userInfo ?? null,
+    userInfo: null,
     peerGpaMap: rawData.peerGpaMap ?? [],
   };
 }

@@ -25,7 +25,7 @@ export function parseFromNetwork(rawData, context) {
     },
     scattergrams: rawData.scattergrams,
     applicationsByYear: rawData.applicationsByYear ?? {},
-    userInfo: rawData.userInfo ?? null,
+    userInfo: null,
     peerGpaMap: rawData.peerGpaMap ?? [],
   };
 }

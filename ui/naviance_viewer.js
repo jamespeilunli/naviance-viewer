@@ -392,7 +392,7 @@
         const y = pad.top + ph - ((g - gpaMin) / (gpaMax - gpaMin)) * ph;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'right';
+        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px monospace'; ctx.textAlign = 'right';
         ctx.fillText(g.toFixed(1), pad.left - 7, y + 4);
       }
       const sStep = sScoreMode === 'sat' ? 100 : 2;
@@ -400,10 +400,10 @@
         const x = pad.left + ((s - sMin) / (sMax - sMin)) * pw;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ph); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px monospace'; ctx.textAlign = 'center';
         ctx.fillText(s, x, pad.top + ph + 15);
       }
-      ctx.fillStyle = '#5a6478'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#5a6478'; ctx.font = '500 10px monospace'; ctx.textAlign = 'center';
       ctx.fillText(sScoreMode === 'sat' ? 'SAT Score' : 'ACT Score', pad.left + pw / 2, H - 6);
       ctx.save(); ctx.translate(13, pad.top + ph / 2); ctx.rotate(-Math.PI / 2);
       ctx.fillText(sGpaMode === 'gpa' ? 'Unweighted GPA' : 'Weighted GPA', 0, 0); ctx.restore();
@@ -415,7 +415,7 @@
         ctx.strokeStyle = 'rgba(0,230,118,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
         ctx.beginPath(); ctx.moveTo(pad.left, ay); ctx.lineTo(pad.left + pw, ay); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(0,230,118,0.5)'; ctx.font = '500 9px IBM Plex Mono'; ctx.textAlign = 'left';
+        ctx.fillStyle = 'rgba(0,230,118,0.5)'; ctx.font = '500 9px monospace'; ctx.textAlign = 'left';
         ctx.fillText('avg acc GPA ' + st.avgGpa.toFixed(2), pad.left + 4, ay - 4);
       }
       if (sScoreMode === 'sat' && st.avgSat && st.avgSat >= sMin && st.avgSat <= sMax) {
@@ -423,7 +423,7 @@
         ctx.strokeStyle = 'rgba(0,230,118,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([3, 5]);
         ctx.beginPath(); ctx.moveTo(ax, pad.top); ctx.lineTo(ax, pad.top + ph); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(0,230,118,0.5)'; ctx.font = '500 9px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(0,230,118,0.5)'; ctx.font = '500 9px monospace'; ctx.textAlign = 'center';
         ctx.fillText('avg ' + Math.round(st.avgSat), ax, pad.top + 12);
       }
 
@@ -435,7 +435,7 @@
         ctx.strokeStyle = 'rgba(0,229,255,0.22)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
         ctx.beginPath(); ctx.moveTo(pad.left, uy); ctx.lineTo(pad.left + pw, uy); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(0,229,255,0.55)'; ctx.font = '600 9px IBM Plex Mono'; ctx.textAlign = 'left';
+        ctx.fillStyle = 'rgba(0,229,255,0.55)'; ctx.font = '600 9px monospace'; ctx.textAlign = 'left';
         ctx.fillText('MY GPA', pad.left + 4, uy - 4);
       }
       if (sScoreMode === 'sat' && MY.sat >= sMin && MY.sat <= sMax) {
@@ -443,13 +443,13 @@
         ctx.strokeStyle = 'rgba(0,229,255,0.22)'; ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]);
         ctx.beginPath(); ctx.moveTo(vx, pad.top); ctx.lineTo(vx, pad.top + ph); ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = 'rgba(0,229,255,0.55)'; ctx.font = '600 9px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(0,229,255,0.55)'; ctx.font = '600 9px monospace'; ctx.textAlign = 'center';
         ctx.fillText(MY.sat, vx, pad.top + 12);
       }
       // star at crossing
       if (uy !== null && vx !== null) {
         drawStar(ctx, vx, uy, 8, 3.5, 5, '#00e5ff', true);
-        ctx.fillStyle = 'rgba(0,229,255,0.9)'; ctx.font = '700 9px IBM Plex Mono'; ctx.textAlign = 'left';
+        ctx.fillStyle = 'rgba(0,229,255,0.9)'; ctx.font = '700 9px monospace'; ctx.textAlign = 'left';
         ctx.fillText('ME', vx + 11, uy + 4);
       }
 
@@ -561,7 +561,7 @@
       ctx.clearRect(0, 0, W, H);
 
       if (years.length < 2) {
-        ctx.fillStyle = '#3a4255'; ctx.font = '10px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#3a4255'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
         ctx.fillText('Not enough year data', W / 2, H / 2); return;
       }
 
@@ -578,7 +578,7 @@
       for (let r = Math.ceil(minR * 10) / 10; r <= maxR; r = +(r + 0.1).toFixed(2)) {
         const y = py(r);
         ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '9px IBM Plex Mono'; ctx.textAlign = 'right';
+        ctx.fillStyle = '#3a4255'; ctx.font = '9px monospace'; ctx.textAlign = 'right';
         ctx.fillText((r * 100).toFixed(0) + '%', pad.left - 4, y + 3);
       }
 
@@ -599,7 +599,7 @@
       for (let i = 0; i < rates.length; i++) {
         ctx.beginPath(); ctx.arc(px(i), py(rates[i]), 3, 0, Math.PI * 2);
         ctx.fillStyle = 'var(--accent)'; ctx.fill();
-        ctx.fillStyle = '#3a4255'; ctx.font = '9px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#3a4255'; ctx.font = '9px monospace'; ctx.textAlign = 'center';
         ctx.fillText(years[i].slice(2), px(i), pad.top + ph + 14);
       }
     }
@@ -714,7 +714,7 @@
         const y = pad.top + ph - ((g - gpaMin) / (gpaMax - gpaMin)) * ph;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'right';
+        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px monospace'; ctx.textAlign = 'right';
         ctx.fillText(g.toFixed(1), pad.left - 7, y + 4);
       }
       const sStep = cScoreMode === 'sat' ? 100 : 2;
@@ -722,10 +722,10 @@
         const x = pad.left + ((s - sMin) / (sMax - sMin)) * pw;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ph); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#3a4255'; ctx.font = '500 10px monospace'; ctx.textAlign = 'center';
         ctx.fillText(s, x, pad.top + ph + 15);
       }
-      ctx.fillStyle = '#5a6478'; ctx.font = '500 10px IBM Plex Mono'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#5a6478'; ctx.font = '500 10px monospace'; ctx.textAlign = 'center';
       ctx.fillText(cScoreMode === 'sat' ? 'SAT' : 'ACT', pad.left + pw / 2, H - 6);
       ctx.save(); ctx.translate(13, pad.top + ph / 2); ctx.rotate(-Math.PI / 2);
       ctx.fillText(cGpaMode === 'gpa' ? 'Unweighted GPA' : 'Weighted GPA', 0, 0); ctx.restore();
@@ -767,7 +767,7 @@
         if (!cVisibleSchools.has(i)) return;
         const color = SCHOOL_COLORS[i % SCHOOL_COLORS.length];
         ctx.beginPath(); ctx.arc(lx + 5, ly - 4, 4, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
-        ctx.fillStyle = color; ctx.font = '600 9px IBM Plex Mono'; ctx.textAlign = 'left';
+        ctx.fillStyle = color; ctx.font = '600 9px monospace'; ctx.textAlign = 'left';
         ctx.fillText(s.name, lx + 12, ly);
         lx += ctx.measureText(s.name).width + 24;
       });
@@ -807,7 +807,7 @@
         const y = pad.top + ph - ((g - gpaMin) / (gpaMax - gpaMin)) * ph;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '9px IBM Plex Mono'; ctx.textAlign = 'right';
+        ctx.fillStyle = '#3a4255'; ctx.font = '9px monospace'; ctx.textAlign = 'right';
         ctx.fillText(g.toFixed(1), pad.left - 5, y + 3);
       }
       const sStep = cScoreMode === 'sat' ? 100 : 2;
@@ -815,10 +815,10 @@
         const x = pad.left + ((s - sMin) / (sMax - sMin)) * pw;
         ctx.strokeStyle = '#141820'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + ph); ctx.stroke();
-        ctx.fillStyle = '#3a4255'; ctx.font = '9px IBM Plex Mono'; ctx.textAlign = 'center';
+        ctx.fillStyle = '#3a4255'; ctx.font = '9px monospace'; ctx.textAlign = 'center';
         ctx.fillText(s, x, pad.top + ph + 14);
       }
-      ctx.fillStyle = '#5a6478'; ctx.font = '9px IBM Plex Mono'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#5a6478'; ctx.font = '9px monospace'; ctx.textAlign = 'center';
       ctx.fillText(cScoreMode === 'sat' ? 'SAT' : 'ACT', pad.left + pw / 2, H - 5);
 
       // ME lines
@@ -854,7 +854,7 @@
       const mx = pad.left + ((myScore - sMin) / (sMax - sMin)) * pw;
       const my2 = pad.top + ph - ((myGpa - gpaMin) / (gpaMax - gpaMin)) * ph;
       drawStar(ctx, mx, my2, 10, 4, 5, '#00e5ff', true);
-      ctx.fillStyle = 'rgba(0,229,255,0.9)'; ctx.font = '700 10px IBM Plex Mono'; ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(0,229,255,0.9)'; ctx.font = '700 10px monospace'; ctx.textAlign = 'left';
       ctx.fillText('ME', mx + 13, my2 + 4);
 
       // legend
@@ -863,7 +863,7 @@
         if (!cVisibleSchools.has(i)) return;
         const color = SCHOOL_COLORS[i % SCHOOL_COLORS.length];
         ctx.beginPath(); ctx.arc(lx + 5, H - 6, 4, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
-        ctx.fillStyle = color; ctx.font = '600 9px IBM Plex Mono'; ctx.textAlign = 'left';
+        ctx.fillStyle = color; ctx.font = '600 9px monospace'; ctx.textAlign = 'left';
         ctx.fillText(s.name, lx + 12, H - 3);
         lx += ctx.measureText(s.name).width + 24;
       });
@@ -883,17 +883,17 @@
       const maxRate = Math.max(...rows.map(r => r.rate));
       wrap.innerHTML = `
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Accept Rate by School (your data)</div>
+      <div style="font-family:monospace;font-size:0.65rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">Accept Rate by School (your data)</div>
       ${rows.map((r, ri) => {
         const color = SCHOOL_COLORS[r.i % SCHOOL_COLORS.length];
         const pct = (r.rate * 100).toFixed(1);
         const barW = Math.max(2, (r.rate / maxRate) * 100);
         return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;" data-idx="${r.i}" class="rate-row" style="cursor:pointer">
-          <div style="width:160px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:${color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;" >${r.name}</div>
+          <div style="width:160px;font-family:monospace;font-size:0.72rem;color:${color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;" >${r.name}</div>
           <div style="flex:1;background:var(--border);border-radius:3px;height:20px;position:relative;cursor:pointer">
             <div style="height:100%;width:${barW}%;background:${color}55;border-radius:3px;border-right:2px solid ${color};transition:width 0.3s;"></div>
           </div>
-          <div style="width:48px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;color:${color};text-align:right;">${pct}%</div>
+          <div style="width:48px;font-family:monospace;font-size:0.72rem;color:${color};text-align:right;">${pct}%</div>
           ${tagHTML(r.cat)}
         </div>`;
       }).join('')}

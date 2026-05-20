@@ -17,7 +17,7 @@ describe('parseFromNetwork', () => {
     expect(result.scattergrams).toBeDefined();
     expect(result.scattergrams.gpa).toBeDefined();
     expect(result.applicationsByYear).toBeDefined();
-    expect(result.userInfo).toBeDefined();
+    expect(result.userInfo).toBeNull();
     expect(result.meta.parserTier).toBe(1);
     expect(result.meta.schemaVersion).toBe('1.0');
   });
@@ -37,10 +37,9 @@ describe('parseFromNetwork', () => {
     });
   });
 
-  it('preserves userInfo', () => {
+  it('does not preserve Naviance userInfo', () => {
     const result = parseFromNetwork(bostonUniv, context);
-    expect(result.userInfo.userId).toBe(71085607);
-    expect(result.userInfo.academics.gpa).toBe(4);
+    expect(result.userInfo).toBeNull();
   });
 
   it('returns null when scattergrams key is missing', () => {

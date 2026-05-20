@@ -3,7 +3,7 @@
   "name": "Naviance Viewer",
   "version": "0.1.0",
   "description": "View, save, compare, and export Naviance scattergram data locally.",
-  "permissions": ["storage", "activeTab", "scripting", "tabs", "webNavigation"],
+  "permissions": ["storage", "scripting", "tabs", "webNavigation"],
   "host_permissions": [
     "https://*.naviance.com/*",
     "https://connection.naviance.com/*"

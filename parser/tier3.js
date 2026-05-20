@@ -25,7 +25,6 @@ Return ONLY valid JSON matching this schema:
 {
   "scattergrams": { "gpa": {...}, "weightedGpa": {...} },
   "applicationsByYear": {},
-  "userInfo": null,
   "peerGpaMap": []
 }
 If you cannot extract valid data, return the string "null".`,
@@ -51,7 +50,7 @@ If you cannot extract valid data, return the string "null".`,
       },
       scattergrams: parsed.scattergrams,
       applicationsByYear: parsed.applicationsByYear ?? {},
-      userInfo: parsed.userInfo ?? null,
+      userInfo: null,
       peerGpaMap: parsed.peerGpaMap ?? [],
     };
   } catch {

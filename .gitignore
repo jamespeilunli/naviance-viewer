@@ -2,3 +2,5 @@ node_modules/
 coverage/
 dist/
 *.log
+*.zip
+.extension-package/

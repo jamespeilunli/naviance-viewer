@@ -6,7 +6,7 @@ const sampleData = {
   meta: { capturedAt: '2026-03-28T12:00:00Z', parserTier: 1, schemaVersion: '1.0' },
   scattergrams: bostonUniv.scattergrams,
   applicationsByYear: bostonUniv.applicationsByYear,
-  userInfo: bostonUniv.userInfo,
+  userInfo: null,
   peerGpaMap: [],
 };
 
