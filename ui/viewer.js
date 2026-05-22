@@ -1,7 +1,11 @@
 // ══════════════════════════════════════════
     // CONSTANTS
     // ══════════════════════════════════════════
-    let MY = { uwGpa: 4.00, wAcadGpa: 4.56, wTotalGpa: 4.52, w1012Gpa: 4.67, sat: 1540, act: 34 };
+    const MY_STATS_STORAGE_KEY = 'myStats';
+    const DEFAULT_MY = Object.freeze({ uwGpa: 4.00, wAcadGpa: 4.56, wTotalGpa: 4.52, w1012Gpa: 4.67, sat: 1540, act: 34 });
+    let MY = { ...DEFAULT_MY };
+    let myStatsLoaded = false;
+    const myStatsLoadPromise = loadMyStats();
 
     const OUTCOMES = {
       acceptedEA: { label: 'Accepted EA', color: '#00e676' },
@@ -34,6 +38,68 @@
     let cActiveTab = 'overlay';
     let cVisibleSchools = new Set();
     let sortCol = 'tag', sortDir = 1;
+
+    function getExtensionStorage() {
+      return window.chrome?.storage?.sync ?? null;
+    }
+
+    function sanitizeMyStats(candidate) {
+      const stats = {};
+      if (!candidate || typeof candidate !== 'object') return stats;
+
+      for (const key of Object.keys(DEFAULT_MY)) {
+        const value = Number(candidate[key]);
+        if (Number.isFinite(value)) stats[key] = value;
+      }
+
+      return stats;
+    }
+
+    async function loadMyStats() {
+      const storage = getExtensionStorage();
+      if (!storage) {
+        myStatsLoaded = true;
+        return;
+      }
+
+      try {
+        const result = await storage.get({ [MY_STATS_STORAGE_KEY]: {} });
+        MY = { ...MY, ...sanitizeMyStats(result[MY_STATS_STORAGE_KEY]) };
+      } catch (err) {
+        console.warn('Failed to load saved stats:', err);
+      } finally {
+        myStatsLoaded = true;
+      }
+    }
+
+    async function saveMyStats() {
+      const storage = getExtensionStorage();
+      if (!storage) return;
+
+      try {
+        await storage.set({ [MY_STATS_STORAGE_KEY]: sanitizeMyStats(MY) });
+      } catch (err) {
+        console.warn('Failed to save stats:', err);
+      }
+    }
+
+    function syncMyInputs() {
+      document.querySelectorAll('.my-input').forEach(input => {
+        const key = input.dataset.key;
+        if (key && Object.prototype.hasOwnProperty.call(MY, key)) {
+          input.value = MY[key];
+        }
+      });
+    }
+
+    function refreshActiveViewForMyStats() {
+      if (document.getElementById('v-dash')?.classList.contains('active') && SCHOOLS.length) buildDash();
+      if (document.getElementById('v-school')?.classList.contains('active') && SCHOOLS[currentSchoolIdx]) {
+        updateMeBar();
+        drawScatter();
+      }
+      if (document.getElementById('v-compare')?.classList.contains('active')) renderCompare();
+    }
 
     // ══════════════════════════════════════════
     // FILE LOADING
@@ -933,7 +999,11 @@
       }
       if (document.getElementById('v-compare').classList.contains('active')) renderCompare();
     });
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await myStatsLoadPromise;
+  syncMyInputs();
+  refreshActiveViewForMyStats();
+
   document.getElementById('btn-load-json')?.addEventListener('click', () => document.getElementById('fileInput').click());
   document.getElementById('btn-load-db')?.addEventListener('click', () => loadFromDB());
   document.getElementById('btn-dash-compare')?.addEventListener('click', () => showCompare());
@@ -953,6 +1023,7 @@ document.addEventListener('input', (e) => {
     const key = e.target.dataset.key;
     if (key) {
       MY[key] = parseFloat(e.target.value) || 0;
+      if (myStatsLoaded) saveMyStats();
       
       // sync values locally to other identical inputs implicitly
       document.querySelectorAll(`.my-input[data-key="${key}"]`).forEach(input => {
